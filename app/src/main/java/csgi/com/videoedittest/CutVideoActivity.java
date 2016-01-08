@@ -25,6 +25,9 @@ import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import csgi.com.cts.Producer;
 
 public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder.Callback {
@@ -36,15 +39,15 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
     private static final int PICK_FILE_REQUEST = 1234;
 
     // Views
-    private SurfaceView mSurfaceView;
-    private Button mBtnPlayPause;
-    private Button mBtnSeekPrev;
-    private Button mBtnSeekNext;
-    private Button mBtnSeekPrevFrame;
-    private Button mBtnSeekNextFrame;
-    private Button mBtnExport;
-    private RangeSeekBar mRangeSeekBar;
-    private TextView mDurationTV;
+    @Bind(R.id.surface_view) SurfaceView mSurfaceView;
+    @Bind(R.id.play_pause_button) Button mBtnPlayPause;
+    @Bind(R.id.seek_prev_button) Button mBtnSeekPrev;
+    @Bind(R.id.seek_next_button) Button mBtnSeekNext;
+    @Bind(R.id.seek_prev_frame_button) Button mBtnSeekPrevFrame;
+    @Bind(R.id.seek_next_frame_button) Button mBtnSeekNextFrame;
+    @Bind(R.id.export_button) Button mBtnExport;
+    @Bind(R.id.range_seek_bar) RangeSeekBar mRangeSeekBar;
+    @Bind(R.id.duration_tv) TextView mDurationTV;
 
     private Surface mSurface;
     private Player mPlayer = null;
@@ -60,6 +63,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_cut_video);
+        ButterKnife.bind(this);
 
         Log.w(TAG, "test video path = " + SAMPLE);
 
@@ -91,59 +95,8 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
             }
         };
 
-        mSurfaceView = (SurfaceView) findViewById(R.id.surface_view);
         mSurfaceView.getHolder().addCallback(this);
 
-        mDurationTV = (TextView) findViewById(R.id.duration_tv);
-
-        mBtnPlayPause = (Button) findViewById(R.id.play_pause_button);
-
-        mBtnSeekNextFrame = (Button) findViewById(R.id.seek_next_frame_button);
-        mBtnSeekNextFrame.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                seekNextFrame();
-            }
-        });
-
-        mBtnSeekNext = (Button) findViewById(R.id.seek_next_button);
-        mBtnSeekNext.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                seekNext();
-            }
-        });
-
-        mBtnSeekPrev = (Button) findViewById(R.id.seek_prev_button);
-        mBtnSeekPrev.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                seekPrev();
-            }
-        });
-
-        mBtnSeekPrevFrame = (Button) findViewById(R.id.seek_prev_frame_button);
-        mBtnSeekPrevFrame.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                seekPrevFrame();
-            }
-        });
-
-        mBtnExport = (Button) findViewById(R.id.export_button);
-        mBtnExport.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                export();
-            }
-        });
-
-        mRangeSeekBar = (RangeSeekBar) findViewById(R.id.range_seek_bar);
         mRangeSeekBar.setNotifyWhileDragging(true);
         mRangeSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
@@ -154,6 +107,30 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         setCurrentState(IdleState);
     }
+    @OnClick(R.id.seek_prev_button)
+    void onSeekPrevClicked(View view) {
+        seekPrev();
+    }
+    @OnClick(R.id.seek_prev_frame_button)
+    void onSeekPrevFrameButtonClicked(View view) {
+        seekPrevFrame();
+    }
+    @OnClick(R.id.seek_next_button)
+    void onSeekNexClicked(View view) {
+        seekNext();
+    }
+    @OnClick(R.id.seek_next_frame_button)
+    void onSeekNexFrameButtonClicked(View view) {
+        seekNextFrame();
+    }
+    @OnClick(R.id.export_button)
+    void onExportButtonClicked(View view) {
+        export();
+    }
+//    @OnClick(R.id.play_pause_button)
+//    void onPlayPauseButtonClicked(View view){
+//
+//    }
 
     private void setCurrentState(State state) {
         mCurrentState = state;
