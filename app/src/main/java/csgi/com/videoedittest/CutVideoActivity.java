@@ -2,10 +2,10 @@ package csgi.com.videoedittest;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +13,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
@@ -27,7 +25,6 @@ import java.text.ParsePosition;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import csgi.com.cts.Producer;
 
 public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder.Callback {
@@ -40,14 +37,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
     // Views
     @Bind(R.id.surface_view) SurfaceView mSurfaceView;
-    @Bind(R.id.play_pause_button) Button mBtnPlayPause;
-    @Bind(R.id.seek_prev_button) Button mBtnSeekPrev;
-    @Bind(R.id.seek_next_button) Button mBtnSeekNext;
-    @Bind(R.id.seek_prev_frame_button) Button mBtnSeekPrevFrame;
-    @Bind(R.id.seek_next_frame_button) Button mBtnSeekNextFrame;
-    @Bind(R.id.export_button) Button mBtnExport;
     @Bind(R.id.range_seek_bar) RangeSeekBar mRangeSeekBar;
-    @Bind(R.id.duration_tv) TextView mDurationTV;
 
     private Surface mSurface;
     private Player mPlayer = null;
@@ -107,30 +97,6 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         setCurrentState(IdleState);
     }
-    @OnClick(R.id.seek_prev_button)
-    void onSeekPrevClicked(View view) {
-        seekPrev();
-    }
-    @OnClick(R.id.seek_prev_frame_button)
-    void onSeekPrevFrameButtonClicked(View view) {
-        seekPrevFrame();
-    }
-    @OnClick(R.id.seek_next_button)
-    void onSeekNexClicked(View view) {
-        seekNext();
-    }
-    @OnClick(R.id.seek_next_frame_button)
-    void onSeekNexFrameButtonClicked(View view) {
-        seekNextFrame();
-    }
-    @OnClick(R.id.export_button)
-    void onExportButtonClicked(View view) {
-        export();
-    }
-//    @OnClick(R.id.play_pause_button)
-//    void onPlayPauseButtonClicked(View view){
-//
-//    }
 
     private void setCurrentState(State state) {
         mCurrentState = state;
@@ -162,6 +128,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            export();
             return true;
         }
 
@@ -289,7 +256,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
                     @Override
                     public void run() {
-                        mDurationTV.setText(String.format("%.2f%%", percentage * 100));
+//                        mDurationTV.setText(String.format("%.2f%%", percentage * 100));
                     }
                 });
             }
@@ -335,7 +302,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
             @Override
             public void run() {
                 NumberFormat numberFormat = NumberFormat.getNumberInstance();
-                mDurationTV.setText(mDurationFormat.format(position) + "/" + mDurationFormat.format(duration));
+//                mDurationTV.setText(mDurationFormat.format(position) + "/" + mDurationFormat.format(duration));
             }
         });
     }
@@ -408,17 +375,9 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         @Override
         public void onChangedToThisState() {
-            mBtnExport.setEnabled(false);
-            mBtnSeekNext.setEnabled(false);
-            mBtnSeekNextFrame.setEnabled(false);
-            mBtnSeekPrev.setEnabled(false);
-            mBtnSeekPrevFrame.setEnabled(false);
-            mBtnPlayPause.setEnabled(true);
             mRangeSeekBar.setEnabled(false);
 
-            mBtnPlayPause.setText("Pick");
-
-            mBtnPlayPause.setOnClickListener(new View.OnClickListener() {
+            mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -438,17 +397,9 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         @Override
         public void onChangedToThisState() {
-            mBtnExport.setEnabled(false);
-            mBtnSeekNext.setEnabled(false);
-            mBtnSeekNextFrame.setEnabled(false);
-            mBtnSeekPrev.setEnabled(false);
-            mBtnSeekPrevFrame.setEnabled(false);
-            mBtnPlayPause.setEnabled(true);
             mRangeSeekBar.setEnabled(false);
 
-            mBtnPlayPause.setText("Pause");
-
-            mBtnPlayPause.setOnClickListener(new View.OnClickListener() {
+            mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -471,17 +422,9 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         @Override
         public void onChangedToThisState() {
-            mBtnExport.setEnabled(true);
-            mBtnSeekNext.setEnabled(true);
-            mBtnSeekNextFrame.setEnabled(true);
-            mBtnSeekPrev.setEnabled(true);
-            mBtnSeekPrevFrame.setEnabled(true);
-            mBtnPlayPause.setEnabled(true);
             mRangeSeekBar.setEnabled(true);
 
-            mBtnPlayPause.setText("Resume");
-
-            mBtnPlayPause.setOnClickListener(new View.OnClickListener() {
+            mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -504,17 +447,9 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
 
         @Override
         public void onChangedToThisState() {
-            mBtnExport.setEnabled(false);
-            mBtnSeekNext.setEnabled(false);
-            mBtnSeekNextFrame.setEnabled(false);
-            mBtnSeekPrev.setEnabled(false);
-            mBtnSeekPrevFrame.setEnabled(false);
-            mBtnPlayPause.setEnabled(false);
             mRangeSeekBar.setEnabled(false);
 
-            mBtnPlayPause.setText("Pick");
-
-            mBtnPlayPause.setOnClickListener(null);
+            mSurfaceView.setOnClickListener(null);
         }
     };
 
