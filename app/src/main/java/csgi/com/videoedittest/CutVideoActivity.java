@@ -13,7 +13,10 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
@@ -38,6 +41,8 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
     // Views
     @Bind(R.id.surface_view) SurfaceView mSurfaceView;
     @Bind(R.id.range_seek_bar) RangeSeekBar mRangeSeekBar;
+    @Bind(R.id.google_progress)
+    ProgressBar mProgressBar;
 
     private Surface mSurface;
     private Player mPlayer = null;
@@ -96,6 +101,9 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         });
 
         setCurrentState(IdleState);
+
+        mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(this)
+                .build());
     }
 
     private void setCurrentState(State state) {
@@ -182,40 +190,6 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         }
     }
 
-    private void seekNextFrame() {
-        if (mPlayer == null || mPlayer.getState() != Player.PlaybackState.Pause) {
-            return;
-        }
-
-        mPlayer.seekNextFrame();
-    }
-
-    private void seekNext() {
-        if (mPlayer == null || mPlayer.getState() != Player.PlaybackState.Pause) {
-            return;
-        }
-
-        mPlayer.seekNext();
-    }
-
-    private void seekPrev() {
-        if (mPlayer == null || mPlayer.getState() != Player.PlaybackState.Pause) {
-            return;
-        }
-
-        mPlayer.seekPrev();
-    }
-
-    private void seekPrevFrame() {
-        if (mPlayer == null || mPlayer.getState() != Player.PlaybackState.Pause) {
-            return;
-        }
-
-        Toast.makeText(this, "TODO: Optimize", Toast.LENGTH_SHORT).show();
-
-        mPlayer.seekPrevFrame();
-    }
-
     private Producer mExporter;
 
     private void export() {
@@ -257,6 +231,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
                     @Override
                     public void run() {
 //                        mDurationTV.setText(String.format("%.2f%%", percentage * 100));
+//                        mExportingPoressView.setPercent((int)(100 * percentage));
                     }
                 });
             }
@@ -376,6 +351,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         @Override
         public void onChangedToThisState() {
             mRangeSeekBar.setEnabled(false);
+            mProgressBar.setVisibility(View.GONE);
 
             mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
@@ -398,6 +374,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         @Override
         public void onChangedToThisState() {
             mRangeSeekBar.setEnabled(false);
+            mProgressBar.setVisibility(View.GONE);
 
             mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
@@ -423,6 +400,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         @Override
         public void onChangedToThisState() {
             mRangeSeekBar.setEnabled(true);
+            mProgressBar.setVisibility(View.GONE);
 
             mSurfaceView.setOnClickListener(new View.OnClickListener() {
 
@@ -448,6 +426,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         @Override
         public void onChangedToThisState() {
             mRangeSeekBar.setEnabled(false);
+            mProgressBar.setVisibility(View.VISIBLE);
 
             mSurfaceView.setOnClickListener(null);
         }

@@ -20,9 +20,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+//    compile project(':progresslibrary')
     compile 'com.android.support:appcompat-v7:21.0.2'
-
     compile 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jpardogo.googleprogressbar:library:1.2.0'
+    compile 'com.github.lzyzsd:circleprogress:1.1.0'
 }
