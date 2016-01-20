@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
@@ -41,8 +42,8 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
     // Views
     @Bind(R.id.surface_view) SurfaceView mSurfaceView;
     @Bind(R.id.range_seek_bar) RangeSeekBar mRangeSeekBar;
-    @Bind(R.id.google_progress)
-    ProgressBar mProgressBar;
+    @Bind(R.id.arc_progress)
+    ArcProgress mProgressBar;
 
     private Surface mSurface;
     private Player mPlayer = null;
@@ -101,9 +102,6 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         });
 
         setCurrentState(IdleState);
-
-        mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(this)
-                .build());
     }
 
     private void setCurrentState(State state) {
@@ -232,6 +230,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
                     public void run() {
 //                        mDurationTV.setText(String.format("%.2f%%", percentage * 100));
 //                        mExportingPoressView.setPercent((int)(100 * percentage));
+                        mProgressBar.setProgress((int)(mProgressBar.getMax() * percentage + 0.5));
                     }
                 });
             }
@@ -427,6 +426,7 @@ public class CutVideoActivity extends ActionBarActivity implements SurfaceHolder
         public void onChangedToThisState() {
             mRangeSeekBar.setEnabled(false);
             mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.setProgress(0);
 
             mSurfaceView.setOnClickListener(null);
         }
